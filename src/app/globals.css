@@ -75,6 +75,107 @@ body {
   animation: glitch 0.3s infinite;
 }
 
+/* Card Glitch Effect */
+@keyframes glitch-card {
+  0% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    transform: translate(-2px, -1px);
+  }
+  20% {
+    transform: translate(2px, 1px);
+    filter: hue-rotate(90deg);
+  }
+  30% {
+    transform: translate(-1px, 2px);
+  }
+  40% {
+    transform: translate(1px, -1px);
+    filter: hue-rotate(180deg);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+  60% {
+    transform: translate(2px, 1px);
+    filter: hue-rotate(270deg);
+  }
+  70% {
+    transform: translate(-2px, -1px);
+  }
+  80% {
+    transform: translate(1px, 2px);
+    filter: hue-rotate(360deg);
+  }
+  90% {
+    transform: translate(-1px, -2px);
+  }
+  100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(2deg); }
+  40% { transform: skew(-1deg); }
+  60% { transform: skew(1deg); }
+  80% { transform: skew(-2deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes glitch-color {
+  0% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+  25% { text-shadow: -2px 0 #ff0000, 2px 0 #00ffff; }
+  50% { text-shadow: 2px 2px #ff0000, -2px -2px #00ffff; }
+  75% { text-shadow: -2px 2px #ff0000, 2px -2px #00ffff; }
+  100% { text-shadow: 2px 0 #ff0000, -2px 0 #00ffff; }
+}
+
+.glitch-card {
+  position: relative;
+}
+
+.glitch-card:hover {
+  animation: glitch-card 0.4s ease-in-out;
+}
+
+.glitch-card:hover .glitch-text {
+  animation: glitch-color 0.3s ease-in-out infinite;
+}
+
+.glitch-card::before,
+.glitch-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.glitch-card::before {
+  background: rgba(255, 0, 0, 0.03);
+  transform: translate(-2px, 0);
+}
+
+.glitch-card::after {
+  background: rgba(0, 255, 255, 0.03);
+  transform: translate(2px, 0);
+}
+
+.glitch-card:hover::before,
+.glitch-card:hover::after {
+  opacity: 1;
+  animation: glitch-skew 0.3s ease-in-out infinite;
+}
+
 /* Scanline effect */
 .scanlines::before {
   content: "";

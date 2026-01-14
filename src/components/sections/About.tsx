@@ -160,13 +160,22 @@ export default function About() {
                   <span className="text-gray-500">const</span> {category.toLowerCase()} <span className="text-gray-500">=</span> [
                 </h4>
                 <div className="flex flex-wrap gap-2 ml-4 mb-2">
-                  {items.map((skill) => (
-                    <span
+                  {items.map((skill, skillIdx) => (
+                    <motion.span
                       key={skill}
-                      className="px-3 py-1 text-sm bg-green-500/10 border border-green-500/30 rounded text-green-300 hover:bg-green-500/20 hover:border-green-500/50 transition-colors cursor-default"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                      transition={{ delay: 0.6 + categoryIdx * 0.1 + skillIdx * 0.05, duration: 0.2 }}
+                      whileHover={{
+                        scale: 1.1,
+                        y: -3,
+                        boxShadow: "0 0 15px rgba(0, 255, 0, 0.4)",
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-3 py-1 text-sm bg-green-500/10 border border-green-500/30 rounded text-green-300 hover:bg-green-500/20 hover:border-green-500/50 transition-colors cursor-pointer select-none"
                     >
                       {`"${skill}"`}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
                 <p className="text-gray-500 text-sm">];</p>

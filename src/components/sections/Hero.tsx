@@ -10,12 +10,81 @@ const roles = [
   "TypeScript Enthusiast",
 ];
 
+// 터미널 명령어 시퀀스
+const terminalLines = [
+  { type: "command", text: "whoami" },
+  { type: "output", text: "김선우 (Kim Sunwoo)" },
+  { type: "command", text: "cat role.txt" },
+];
+
 export default function Hero() {
   const [currentRole, setCurrentRole] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // 터미널 타이핑 상태
+  const [terminalState, setTerminalState] = useState<{
+    lineIndex: number;
+    charIndex: number;
+    lines: { type: string; text: string; displayed: string }[];
+    isComplete: boolean;
+  }>({
+    lineIndex: 0,
+    charIndex: 0,
+    lines: terminalLines.map(line => ({ ...line, displayed: "" })),
+    isComplete: false,
+  });
+
+  // 터미널 타이핑 효과
   useEffect(() => {
+    if (terminalState.isComplete) return;
+
+    const { lineIndex, charIndex } = terminalState;
+    const currentLine = terminalLines[lineIndex];
+
+    if (!currentLine) {
+      setTerminalState(prev => ({ ...prev, isComplete: true }));
+      return;
+    }
+
+    const typingSpeed = currentLine.type === "command" ? 80 : 30;
+    const lineDelay = currentLine.type === "output" ? 300 : 500;
+
+    const timeout = setTimeout(() => {
+      if (charIndex < currentLine.text.length) {
+        // 현재 줄 타이핑 중
+        setTerminalState(prev => ({
+          ...prev,
+          charIndex: charIndex + 1,
+          lines: prev.lines.map((line, idx) =>
+            idx === lineIndex
+              ? { ...line, displayed: currentLine.text.slice(0, charIndex + 1) }
+              : line
+          ),
+        }));
+      } else {
+        // 다음 줄로 이동
+        if (lineIndex < terminalLines.length - 1) {
+          setTimeout(() => {
+            setTerminalState(prev => ({
+              ...prev,
+              lineIndex: lineIndex + 1,
+              charIndex: 0,
+            }));
+          }, lineDelay);
+        } else {
+          setTerminalState(prev => ({ ...prev, isComplete: true }));
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timeout);
+  }, [terminalState]);
+
+  // Role 타이핑 효과 (터미널 완료 후 시작)
+  useEffect(() => {
+    if (!terminalState.isComplete) return;
+
     const role = roles[currentRole];
     const timeout = setTimeout(
       () => {
@@ -38,7 +107,7 @@ export default function Hero() {
     );
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, currentRole]);
+  }, [displayText, isDeleting, currentRole, terminalState.isComplete]);
 
   return (
     <section
@@ -89,25 +158,50 @@ export default function Hero() {
             <span className="ml-2 text-gray-500 text-sm">terminal</span>
           </div>
           <div className="space-y-2 text-sm md:text-base">
+            {/* whoami 명령어 */}
             <p>
               <span className="text-green-400">guest@portfolio</span>
               <span className="text-gray-500">:</span>
               <span className="text-blue-400">~</span>
               <span className="text-gray-500">$</span>
-              <span className="text-white ml-2">whoami</span>
+              <span className="text-white ml-2">
+                {terminalState.lines[0].displayed}
+                {terminalState.lineIndex === 0 && !terminalState.isComplete && (
+                  <span className="cursor-blink">|</span>
+                )}
+              </span>
             </p>
-            <p className="text-green-300">김선우 (Kim Sunwoo)</p>
-            <p className="mt-4">
-              <span className="text-green-400">guest@portfolio</span>
-              <span className="text-gray-500">:</span>
-              <span className="text-blue-400">~</span>
-              <span className="text-gray-500">$</span>
-              <span className="text-white ml-2">cat role.txt</span>
-            </p>
-            <p className="text-green-300 h-6">
-              {displayText}
-              <span className="cursor-blink">|</span>
-            </p>
+            {/* whoami 출력 */}
+            {terminalState.lineIndex >= 1 && (
+              <p className="text-green-300">
+                {terminalState.lines[1].displayed}
+                {terminalState.lineIndex === 1 && !terminalState.isComplete && (
+                  <span className="cursor-blink">|</span>
+                )}
+              </p>
+            )}
+            {/* cat role.txt 명령어 */}
+            {terminalState.lineIndex >= 2 && (
+              <p className="mt-4">
+                <span className="text-green-400">guest@portfolio</span>
+                <span className="text-gray-500">:</span>
+                <span className="text-blue-400">~</span>
+                <span className="text-gray-500">$</span>
+                <span className="text-white ml-2">
+                  {terminalState.lines[2].displayed}
+                  {terminalState.lineIndex === 2 && !terminalState.isComplete && (
+                    <span className="cursor-blink">|</span>
+                  )}
+                </span>
+              </p>
+            )}
+            {/* role 출력 (타이핑 효과) */}
+            {terminalState.isComplete && (
+              <p className="text-green-300 h-6">
+                {displayText}
+                <span className="cursor-blink">|</span>
+              </p>
+            )}
           </div>
         </motion.div>
 

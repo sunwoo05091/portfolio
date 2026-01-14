@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import IntroAnimation from "@/components/ui/IntroAnimation";
 import MatrixRain from "@/components/ui/MatrixRain";
+import CursorGlow from "@/components/ui/CursorGlow";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
@@ -50,6 +51,9 @@ export default function Home() {
         >
           {/* Matrix Rain Background */}
           <MatrixRain opacity={0.15} />
+
+          {/* Cursor Glow Effect */}
+          <CursorGlow />
 
           {/* Navigation */}
           <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-sm border-b border-green-500/20">
