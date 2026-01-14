@@ -22,10 +22,6 @@ const experiences = [
     command: "cat skills.txt",
     output: ["Flutter, React, Next.js, TypeScript", "Unreal Engine 5, C++, AWS"],
   },
-  {
-    command: "ls projects/",
-    output: ["Journeye/", "퀘스트스쿨/", "엄지/", "소방조법시뮬레이션/"],
-  },
 ];
 
 const careers = [
