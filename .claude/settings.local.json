@@ -9,7 +9,9 @@
       "Bash(git remote add:*)",
       "Bash(git remote set-url:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Add portfolio website with Matrix theme\n\n- Add Hero section with ASCII art and typing animation\n- Add About section with terminal-style intro and career history\n- Add Projects section with 6 projects \\(Journeye, PMS, QuestSchool, etc.\\)\n- Add Contact section with email link\n- Add Matrix rain background animation\n- Add project modal with image gallery\n- Add responsive navigation\n- Configure Next.js for unoptimized images\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Add portfolio website with Matrix theme\n\n- Add Hero section with ASCII art and typing animation\n- Add About section with terminal-style intro and career history\n- Add Projects section with 6 projects \\(Journeye, PMS, QuestSchool, etc.\\)\n- Add Contact section with email link\n- Add Matrix rain background animation\n- Add project modal with image gallery\n- Add responsive navigation\n- Configure Next.js for unoptimized images\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
