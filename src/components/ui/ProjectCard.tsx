@@ -29,7 +29,11 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
           <span className="ml-2 text-gray-500 text-sm truncate">
             {project.title.toLowerCase().replace(/\s/g, "_")}.md
           </span>
-          {project.featured && (
+          {project.inProgress ? (
+            <span className="ml-auto text-xs text-cyan-400 border border-cyan-400/50 px-2 py-0.5 rounded animate-pulse">
+              in progress
+            </span>
+          ) : project.featured && (
             <span className="ml-auto text-xs text-yellow-400 border border-yellow-400/50 px-2 py-0.5 rounded">
               featured
             </span>
@@ -86,7 +90,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
           {/* Click hint */}
           <div className="pt-4 border-t border-green-500/20">
             <p className="text-sm text-gray-500 group-hover:text-green-400 transition-colors">
-              <span className="text-green-500">$</span> click to view details →
+              <span className="text-green-500">$</span>{" "}
+              {project.inProgress ? "click to peek →" : "click to view details →"}
             </p>
           </div>
         </div>

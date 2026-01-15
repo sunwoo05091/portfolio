@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from "react";
 import { projects, type Project } from "@/data/projects";
 import ProjectCard from "@/components/ui/ProjectCard";
 import ProjectModal from "@/components/ui/ProjectModal";
+import InProgressModal from "@/components/ui/InProgressModal";
 
 type FilterType = "all" | "mobile" | "web" | "other";
 
@@ -15,6 +16,7 @@ export default function Projects() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inProgressProject, setInProgressProject] = useState<Project | null>(null);
 
   const filteredProjects = projects.filter((project) => {
     if (filter === "all") return true;
@@ -29,8 +31,16 @@ export default function Projects() {
   ];
 
   const handleProjectClick = (project: Project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
+    if (project.inProgress) {
+      setInProgressProject(project);
+    } else {
+      setSelectedProject(project);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseInProgress = () => {
+    setInProgressProject(null);
   };
 
   const handleCloseModal = () => {
@@ -43,10 +53,11 @@ export default function Projects() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         handleCloseModal();
+        handleCloseInProgress();
       }
     };
 
-    if (isModalOpen) {
+    if (isModalOpen || inProgressProject) {
       document.addEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "hidden";
     }
@@ -55,7 +66,7 @@ export default function Projects() {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "unset";
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, inProgressProject]);
 
   return (
     <>
@@ -138,6 +149,12 @@ export default function Projects() {
         project={selectedProject}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+      />
+
+      {/* In Progress Modal */}
+      <InProgressModal
+        project={inProgressProject}
+        onClose={handleCloseInProgress}
       />
     </>
   );

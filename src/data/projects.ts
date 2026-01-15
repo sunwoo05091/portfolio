@@ -8,6 +8,7 @@ export interface Project {
   featured: boolean;
   category: "mobile" | "web" | "other";
   images?: string[];
+  inProgress?: boolean;
   externalLinks?: {
     title: string;
     url: string;
@@ -383,6 +384,23 @@ export const projects: Project[] = [
           ],
         },
       ],
+    },
+  },
+  {
+    id: "7",
+    title: "치매머니",
+    description: "치매 환자와 보호자를 위한 금융 관리 및 케어 서비스 플랫폼",
+    techStack: ["Flutter", "Dart", "Riverpod", "Firebase"],
+    featured: true,
+    category: "mobile",
+    images: [],
+    inProgress: true,
+    details: {
+      summary: "치매 환자와 보호자를 위한 통합 금융 관리 및 케어 서비스 플랫폼입니다.",
+      role: "프론트엔드 개발",
+      team: "진행중",
+      achievements: [],
+      features: [],
     },
   },
 ];
