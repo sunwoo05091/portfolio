@@ -1,3 +1,14 @@
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const withBasePath = (path: string) => {
+  if (!path) return path;
+  if (/^https?:\/\//.test(path)) return path;
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return basePath ? `${basePath}${normalized}` : normalized;
+};
+
+const mapImages = (paths: string[]) => paths.map(withBasePath);
+
 export interface Project {
   id: string;
   title: string;
@@ -35,7 +46,7 @@ export const projects: Project[] = [
     featured: true,
     category: "mobile",
     githubUrl: "https://github.com",
-    images: ["/journeye.png", "/journeye2.png", "/journeye3.png"],
+    images: mapImages(["/journeye.png", "/journeye2.png", "/journeye3.png"]),
     details: {
       summary: "Journeye는 사용자가 호텔 예약과 AI 기반 컨시어지 서비스를 하나의 앱에서 경험할 수 있도록 설계된 통합 모바일 플랫폼입니다. 사용자의 현재 위치를 기반으로 주변 호텔 및 컨시어지 정보를 실시간으로 노출하며, 체크인, 리뷰 작성, 채팅 및 알림 기능을 통해 맞춤형 여행 경험을 제공합니다.",
       role: "프론트엔드 개발 (70% 기여)",
@@ -87,7 +98,7 @@ export const projects: Project[] = [
     techStack: ["React", "TypeScript", "Redux", "Zustand", "WebSocket", "AWS EC2"],
     featured: true,
     category: "web",
-    images: ["/pms.png", "/pms2.png", "/pms3.png", "/pms4.png"],
+    images: mapImages(["/pms.png", "/pms2.png", "/pms3.png", "/pms4.png"]),
     details: {
       summary: "Journeye PMS는 호텔측에서 체크인 및 이용객 관리, Journeye 앱 사용자들과의 실시간 소통을 할 수 있는 관리 시스템입니다. 호텔 투숙객들과의 1대1 양방향 번역 소통을 지원하며 고객 맞춤형 응대 서비스가 가능합니다.",
       role: "프론트엔드 개발",
@@ -261,7 +272,7 @@ export const projects: Project[] = [
     techStack: ["Flutter", "Dart", "Riverpod", "GoRouter", "Dio", "Firebase Messaging", "Hive"],
     featured: true,
     category: "mobile",
-    images: ["/building.png", "/building2.png", "/building3.png", "/building4.png"],
+    images: mapImages(["/building.png", "/building2.png", "/building3.png", "/building4.png"]),
     details: {
       summary: "본 프로젝트는 4가지 사용자 역할(입주민, 관리자, 담당자, 본사)을 지원하는 Flutter 기반 건물 관리 애플리케이션입니다. Clean Architecture 기반 모듈식 구조로 민원 접수/처리, 출퇴근 관리, 공지사항, FCM 푸시 알림 등 핵심 기능을 통합 제공합니다.",
       role: "Flutter 개발 (단독)",
