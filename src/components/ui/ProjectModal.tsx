@@ -12,11 +12,14 @@ interface ProjectModalProps {
 }
 
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!project) return null;
 
   const hasImages = project.images && project.images.length > 0;
+
+  const resolveImage = (path: string) => (basePath ? `${basePath}${path}` : path);
 
   const nextImage = () => {
     if (hasImages) {
@@ -96,7 +99,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         {/* Image Container */}
                         <div className="relative aspect-video md:aspect-[16/9] w-full">
                           <Image
-                            src={project.images![currentImageIndex]}
+                            src={resolveImage(project.images![currentImageIndex])}
                             alt={`${project.title} screenshot ${currentImageIndex + 1}`}
                             fill
                             className="object-contain"
@@ -142,7 +145,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                               }`}
                             >
                               <Image
-                                src={img}
+                                src={resolveImage(img)}
                                 alt={`Thumbnail ${idx + 1}`}
                                 fill
                                 className="object-cover"
