@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
@@ -11,15 +11,28 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
+const getBasePath = () => {
+  if (typeof document !== "undefined") {
+    const attr = document.body.getAttribute("data-basepath");
+    if (attr) return attr === "/" ? "" : attr;
+  }
+  return process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+};
+
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const basePath = useMemo(() => getBasePath(), []);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!project) return null;
 
   const hasImages = project.images && project.images.length > 0;
 
-  const resolveImage = (path: string) => (basePath ? `${basePath}${path}` : path);
+  const resolveImage = (path: string) => {
+    if (!path) return path;
+    if (/^https?:\/\//.test(path)) return path;
+    const normalized = path.startsWith("/") ? path : `/${path}`;
+    return basePath ? `${basePath}${normalized}` : normalized;
+  };
 
   const nextImage = () => {
     if (hasImages) {

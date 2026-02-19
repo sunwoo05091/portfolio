@@ -8,6 +8,8 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export const metadata: Metadata = {
   title: "김선우 | Frontend Developer",
   description: "Flutter Mobile + Frontend Developer Portfolio",
@@ -27,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${jetbrainsMono.variable} antialiased`}>
+      <body className={`${jetbrainsMono.variable} antialiased`} data-basepath={basePath}>
         {children}
       </body>
     </html>
