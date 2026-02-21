@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
+import { resolveImagePath } from "@/lib/config";
 
 interface ProjectModalProps {
   project: Project | null;
@@ -11,28 +12,12 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-const getBasePath = () => {
-  if (typeof document !== "undefined") {
-    const attr = document.body.getAttribute("data-basepath");
-    if (attr) return attr === "/" ? "" : attr;
-  }
-  return process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-};
-
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
-  const basePath = useMemo(() => getBasePath(), []);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!project) return null;
 
   const hasImages = project.images && project.images.length > 0;
-
-  const resolveImage = (path: string) => {
-    if (!path) return path;
-    if (/^https?:\/\//.test(path)) return path;
-    const normalized = path.startsWith("/") ? path : `/${path}`;
-    return basePath ? `${basePath}${normalized}` : normalized;
-  };
 
   const nextImage = () => {
     if (hasImages) {
@@ -112,7 +97,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                         {/* Image Container */}
                         <div className="relative aspect-video md:aspect-[16/9] w-full">
                           <Image
-                            src={resolveImage(project.images![currentImageIndex])}
+                            src={resolveImagePath(project.images![currentImageIndex])}
                             alt={`${project.title} screenshot ${currentImageIndex + 1}`}
                             fill
                             className="object-contain"
@@ -158,7 +143,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                               }`}
                             >
                               <Image
-                                src={resolveImage(img)}
+                                src={resolveImagePath(img)}
                                 alt={`Thumbnail ${idx + 1}`}
                                 fill
                                 className="object-cover"
